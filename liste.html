@@ -63,31 +63,38 @@
           const carte = document.createElement("article");
           carte.className = "stagiaire";
 
-          const image = document.createElement("img");
-          image.alt = "Photo de " + stagiaire.prenom;
+         
+const image = document.createElement("img");
+image.alt = "Photo de " + stagiaire.prenom;
 
-          const url = new URL(stagiaire.photo);
+try {
+  const url = new URL(stagiaire.photo);
 
-          if (
-            url.protocol !== "https:" ||
-            url.hostname !== "res.cloudinary.com"
-          ) {
-            throw new Error("URL de photo non autorisée.");
-          }
+  if (
+    url.protocol !== "https:" ||
+    url.hostname !== "res.cloudinary.com"
+  ) {
+    throw new Error("URL non autorisée");
+  }
 
-          image.src = url.href;
+  image.src = url.href;
+} catch {
+  image.alt = "Photo non disponible";
+  image.removeAttribute("src");
+}
 
-          const infos = document.createElement("div");
-          const nom = document.createElement("h2");
-          nom.textContent =
-            stagiaire.prenom + " " + stagiaire.nom;
+const infos = document.createElement("div");
 
-          const ville = document.createElement("p");
-          ville.textContent = "Ville : " + stagiaire.ville;
+const nom = document.createElement("h2");
+nom.textContent = stagiaire.prenom + " " + stagiaire.nom;
 
-          infos.append(nom, ville);
-          carte.append(image, infos);
-          liste.append(carte);
+const ville = document.createElement("p");
+ville.textContent = "Ville : " + stagiaire.ville;
+
+infos.append(nom, ville);
+carte.append(image, infos);
+liste.append(carte);
+
         });
 
         message.textContent =
