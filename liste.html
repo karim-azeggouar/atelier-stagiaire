@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Liste des stagiaires</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 16px;
+    }
+
+    .stagiaire {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 12px 0;
+    }
+
+    .stagiaire img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Liste des stagiaires</h1>
+
+  <p><a href="/">Inscrire un nouveau stagiaire</a></p>
+  <p id="message" role="status">Chargement des stagiaires...</p>
+  <div id="liste"></div>
+
+  <script>
+    async function chargerStagiaires() {
+      const message = document.getElementById("message");
+      const liste = document.getElementById("liste");
+
+      try {
+        const response = await fetch("/api/liste.php");
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Erreur de chargement.");
+        }
+
+        liste.replaceChildren();
+
+        if (data.length === 0) {
+          message.textContent = "Aucun stagiaire enregistré.";
+          return;
+        }
+
+        data.forEach((stagiaire) => {
+          const carte = document.createElement("article");
+          carte.className = "stagiaire";
+
+          const image = document.createElement("img");
+          image.alt = "Photo de " + stagiaire.prenom;
+
+          const url = new URL(stagiaire.photo);
+
+          if (
+            url.protocol !== "https:" ||
+            url.hostname !== "res.cloudinary.com"
+          ) {
+            throw new Error("URL de photo non autorisée.");
+          }
+
+          image.src = url.href;
+
+          const infos = document.createElement("div");
+          const nom = document.createElement("h2");
+          nom.textContent =
+            stagiaire.prenom + " " + stagiaire.nom;
+
+          const ville = document.createElement("p");
+          ville.textContent = "Ville : " + stagiaire.ville;
+
+          infos.append(nom, ville);
+          carte.append(image, infos);
+          liste.append(carte);
+        });
+
+        message.textContent =
+          data.length + " stagiaire(s) enregistré(s).";
+
+      } catch (error) {
+        message.textContent = error.message;
+      }
+    }
+
+    chargerStagiaires();
+  </script>
+</body>
+</html>

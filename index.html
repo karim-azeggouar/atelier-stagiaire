@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inscription des stagiaires</title>
+</head>
+<body>
+  <h1>Inscription d'un stagiaire</h1>
+
+  <form id="formInscription">
+    <p>
+      <label for="nom">Nom :</label>
+      <input id="nom" name="nom" maxlength="100" required>
+    </p>
+
+    <p>
+      <label for="prenom">Prénom :</label>
+      <input id="prenom" name="prenom" maxlength="100" required>
+    </p>
+
+    <p>
+      <label for="ville">Ville :</label>
+      <input id="ville" name="ville" maxlength="100" required>
+    </p>
+
+    <p>
+      <label for="photo">Photo (JPG, PNG ou WebP) :</label>
+      <input
+        id="photo"
+        name="photo"
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        required
+      >
+    </p>
+
+    <button type="submit">Inscrire</button>
+  </form>
+
+  <p id="message" role="status"></p>
+  <p><a href="/liste.html">Consulter la liste des stagiaires</a></p>
+
+  <script>
+    const form = document.getElementById("formInscription");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      message.textContent = "Inscription en cours...";
+
+      try {
+        const response = await fetch("/api/inscrire.php", {
+          method: "POST",
+          body: new FormData(form)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || "Échec de l'inscription.");
+        }
+
+        message.textContent = result.message;
+        form.reset();
+      } catch (error) {
+        message.textContent = error.message;
+      }
+    });
+  </script>
+</body>
+</html>
