@@ -5,9 +5,119 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Inscription des stagiaires</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #29212a;
+      background: #f7f5f7;
+      font-synthesis: none;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 48px 20px;
+      border-top: 4px solid #a31855;
+    }
+
+    main {
+      width: min(100%, 540px);
+      margin: 0 auto;
+      padding: 34px;
+      background: #fff;
+      border: 1px solid #eee7ec;
+      border-radius: 16px;
+      box-shadow: 0 14px 40px rgba(66, 31, 50, .08);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      color: #351b2a;
+      font-size: clamp(1.7rem, 5vw, 2.1rem);
+      line-height: 1.2;
+    }
+
+    .intro { margin: 0 0 26px; color: #746a71; line-height: 1.5; }
+
+    form p { margin: 0 0 18px; }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      color: #453941;
+      font-size: .95rem;
+      font-weight: 600;
+    }
+
+    input:not([type="file"]) {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid #d9cfd5;
+      border-radius: 8px;
+      background: #fff;
+      color: inherit;
+      font: inherit;
+    }
+
+    input:focus-visible {
+      outline: 3px solid rgba(163, 24, 85, .18);
+      border-color: #a31855;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px dashed #d9cfd5;
+      border-radius: 8px;
+      background: #fcfafb;
+      color: #655b62;
+    }
+
+    button {
+      width: 100%;
+      min-height: 46px;
+      margin-top: 4px;
+      border: 0;
+      border-radius: 8px;
+      background: #a31855;
+      color: #fff;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .15s ease, transform .15s ease;
+    }
+
+    button:hover { background: #831342; }
+    button:active { transform: translateY(1px); }
+    button:focus-visible, a:focus-visible { outline: 3px solid #d47ba1; outline-offset: 3px; }
+
+    #message { min-height: 1.25em; margin: 16px 0 0; color: #51464d; }
+
+    .list-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: #8d174c;
+      font-weight: 600;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .list-link:hover { color: #631037; }
+
+    @media (max-width: 480px) {
+      body { padding: 24px 14px; }
+      main { padding: 25px 20px; }
+    }
+  </style>
 </head>
 <body>
+  <main>
   <h1>Inscription d'un stagiaire</h1>
+  <p class="intro">Remplissez les informations ci-dessous pour inscrire un stagiaire.</p>
 
   <form id="formInscription">
     <p>
@@ -40,7 +150,8 @@
   </form>
 
   <p id="message" role="status"></p>
-  <p><a href="/liste.html">Consulter la liste des stagiaires</a></p>
+  <a class="list-link" href="/liste.html">Consulter la liste des stagiaires</a>
+  </main>
 
   <script>
     const form = document.getElementById("formInscription");

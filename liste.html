@@ -7,37 +7,111 @@
   <title>Liste des stagiaires</title>
 
   <style>
+    :root {
+      font-family: Arial, Helvetica, sans-serif;
+      color: #29212a;
+      background: #f7f5f7;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
-      font-family: Arial, sans-serif;
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 0 16px;
+      min-height: 100vh;
+      margin: 0;
+      padding: 42px 20px;
+      border-top: 4px solid #a31855;
+    }
+
+    main {
+      width: min(100%, 760px);
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      color: #351b2a;
+      font-size: clamp(1.8rem, 5vw, 2.3rem);
+      line-height: 1.2;
+    }
+
+    .top-link {
+      display: inline-block;
+      margin: 0 0 22px;
+      color: #8d174c;
+      font-weight: 600;
+      text-underline-offset: 3px;
+    }
+
+    .top-link:hover { color: #631037; }
+
+    #message {
+      margin: 0 0 14px;
+      color: #746a71;
+      line-height: 1.5;
     }
 
     .stagiaire {
       display: flex;
       align-items: center;
-      gap: 16px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 12px;
+      gap: 20px;
+      min-width: 0;
+      padding: 18px;
       margin: 12px 0;
+      border: 1px solid #eee7ec;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(66, 31, 50, .05);
+      transition: border-color .15s ease, transform .15s ease;
+    }
+
+    .stagiaire:hover {
+      transform: translateY(-2px);
+      border-color: #d8b8c8;
     }
 
     .stagiaire img {
-      width: 90px;
-      height: 90px;
+      flex: 0 0 88px;
+      width: 88px;
+      height: 88px;
       object-fit: cover;
       border-radius: 50%;
+      background: #f1e8ed;
+      color: #746a71;
+      font-size: .75rem;
+      text-align: center;
+    }
+
+    .infos { min-width: 0; }
+
+    .stagiaire h2 {
+      margin: 0 0 8px;
+      color: #351b2a;
+      font-size: 1.25rem;
+      overflow-wrap: anywhere;
+    }
+
+    .stagiaire p {
+      margin: 0;
+      color: #746a71;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 26px 14px; }
+      .stagiaire { gap: 14px; padding: 14px; }
+      .stagiaire img { flex-basis: 68px; width: 68px; height: 68px; }
+      .stagiaire h2 { font-size: 1.05rem; }
     }
   </style>
 </head>
 <body>
+  <main>
   <h1>Liste des stagiaires</h1>
 
-  <p><a href="/">Inscrire un nouveau stagiaire</a></p>
+  <a class="top-link" href="/">← Inscrire un nouveau stagiaire</a>
   <p id="message" role="status">Chargement des stagiaires...</p>
   <div id="liste"></div>
+  </main>
 
   <script>
     async function chargerStagiaires() {
@@ -84,6 +158,7 @@ try {
 }
 
 const infos = document.createElement("div");
+infos.className = "infos";
 
 const nom = document.createElement("h2");
 nom.textContent = stagiaire.prenom + " " + stagiaire.nom;
