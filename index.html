@@ -56,7 +56,17 @@
           body: new FormData(form)
         });
 
-        const result = await response.json();
+        // Read as text first so a PHP/Vercel HTML error page does not turn
+        // into the unhelpful "Unexpected token '<'" JSON parsing error.
+        const body = await response.text();
+        let result;
+        try {
+          result = JSON.parse(body);
+        } catch {
+          throw new Error(
+            `Le serveur a renvoyé une réponse inattendue (HTTP ${response.status}). Vérifiez les journaux Vercel.`
+          );
+        }
 
         if (!response.ok) {
           throw new Error(result.message || "Échec de l'inscription.");
