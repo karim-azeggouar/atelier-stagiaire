@@ -1,6 +1,9 @@
 
 <?php
 
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+
 header('Content-Type: application/json; charset=utf-8');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
@@ -23,12 +26,11 @@ try {
 
     echo json_encode(
         $stmt->fetchAll(),
-        JSON_UNESCAPED_UNICODE
+        JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR
     );
 
 } catch (Throwable $e) {
     error_log((string) $e);
-
     http_response_code(500);
 
     echo json_encode([
